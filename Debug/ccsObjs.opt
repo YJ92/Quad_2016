@@ -1,0 +1,1 @@
+"./main.obj" "./startup_ccs.obj" "./uartstdio.obj" "./my_api/Configure_system.obj" "./my_api/Controller.obj" "./my_api/I2C_API.obj" "./my_api/Kalman_Filter.obj" "./my_api/Motor_Matrix.obj" "./my_api/My_utils.obj" "./my_api/PID_v1.obj" "../tm4c123gh6pm.cmd" -l"libc.a" -l"C:\ti\TivaWare_C_Series-2.1.2.111\driverlib\ccs\Debug\driverlib.lib" 
