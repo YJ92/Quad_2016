@@ -22,6 +22,7 @@ void PID_init(PidType* pid, FloatType Kp, FloatType Ki, FloatType Kd,
   pid->mySetpoint = 0;
   pid->ITerm = 0;
   pid->lastInput = 0;
+  pid->lastdInput = 0;
   pid->inAuto = false;
 
   PID_SetOutputLimits(pid, 0, 0xffff);
@@ -53,11 +54,11 @@ bool PID_Compute(PidType* pid) {
     FloatType input = pid->myInput;
     FloatType error = pid->mySetpoint - input;
     pid->ITerm += (pid->ki * error);
-    if (pid->ITerm > pid->outMax)
-      pid->ITerm = pid->outMax;
-    else if (pid->ITerm < pid->outMin)
-      pid->ITerm = pid->outMin;
-    FloatType dInput = (input - pid->lastInput);
+    if (pid->ITerm > pid->outMax*0.3)
+      pid->ITerm = pid->outMax*0.3;
+    else if (pid->ITerm < pid->outMin*0.3)
+      pid->ITerm = pid->outMin*0.3;
+    FloatType dInput = 0.3*(input - pid->lastInput) + 0.7*pid->lastdInput;
 
     /*Compute PID Output*/
     FloatType output = pid->kp * error + pid->ITerm - pid->kd * dInput;
@@ -70,6 +71,7 @@ bool PID_Compute(PidType* pid) {
 
     /*Remember some variables for next time*/
     pid->lastInput = input;
+    pid->lastdInput = dInput;
 //    pid->lastTime = now;
     return true;
 //  } else {

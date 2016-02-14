@@ -11,5 +11,6 @@
 
 extern float constraints(float input, float min, float max);
 extern void ESC_on(void);
+extern void MPU6050_on(void);
 
 #endif /* MY_API_MY_UTILS_H_ */

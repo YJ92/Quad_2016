@@ -34,7 +34,7 @@ typedef struct {
                      //   what these values are.  with pointers we'll just know.
 
 //  unsigned long lastTime;
-  FloatType ITerm, lastInput;
+  FloatType ITerm, lastInput, lastdInput;
 
   unsigned long SampleTime;
   FloatType outMin, outMax;

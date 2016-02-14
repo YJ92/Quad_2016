@@ -29,8 +29,8 @@
 #include "PID_v1.h"
 #include "variables_map.h"
 
-unsigned long _flag;
-int _count;
+volatile unsigned long _flag_200;
+volatile int _count_200;
 
 //*****************************************************************************
 // PWM Setting(Use PF1 port, M1PWM5) : 500Hz pwm
@@ -150,6 +150,8 @@ void ConfigureTimer(void){
 	TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
 	TimerIntRegister(TIMER0_BASE, TIMER_A, Timer0AIntHandler);
 	IntEnable(INT_TIMER0A);
+	// Timer enlabe
+	TimerEnable(TIMER0_BASE, TIMER_A);
 }
 
 //*****************************************************************************
@@ -157,10 +159,10 @@ void ConfigureTimer(void){
 //*****************************************************************************
 void Timer0AIntHandler(){
 	TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-	_flag = true;
-	_count += 1;
-	if(_count == 10000)
-		_count = 0;
+	_flag_200 = true;
+	_count_200 += 1;
+	if(_count_200 == 10000)
+		_count_200 = 0;
 
 }
 

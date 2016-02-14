@@ -148,7 +148,7 @@ all: QUAD_2016(IMU).out
 QUAD_2016(IMU).out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -Ooff -g --gcc --define=css="css" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=ccs="ccs" --diag_wrap=off --diag_warning=225 --display_error_number -z -m"QUAD_2016(IMU).map" --heap_size=0 --stack_size=512 -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/lib" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/include" --reread_libs --display_error_number --diag_wrap=off --warn_sections --xml_link_info="QUAD_2016(IMU)_linkInfo.xml" --rom_model -o "QUAD_2016(IMU).out" $(ORDERED_OBJS)
+	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -Ooff --opt_for_speed=0 -g --gcc --define=css="css" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=ccs="ccs" --diag_wrap=off --diag_warning=225 --display_error_number -z -m"QUAD_2016(IMU).map" --heap_size=0 --stack_size=1024 -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/lib" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/include" --reread_libs --display_error_number --diag_wrap=off --warn_sections --xml_link_info="QUAD_2016(IMU)_linkInfo.xml" --rom_model -o "QUAD_2016(IMU).out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

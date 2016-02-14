@@ -17,6 +17,7 @@ float P_kalman[4][4] = {{1,0,0,0},{0,1,0,0},{0,0,1,0},{0,0,0,1}};
 float xp[4], Pp[4][4], K[4][4], A[4][4];
 float m[3] = {1,0,0};
 
+
 //*****************************************************************************
 // Matrix Functions
 //*****************************************************************************
@@ -94,8 +95,8 @@ unsigned long InverseMatrix(float num[4][4],int f){
 //*****************************************************************************
 // Calculate Euler Angle with Kalman Filter
 //*****************************************************************************
-void EulerAngle(float* e, float* q){
-	float a[3], w[3], L[3], t[4], m_dot[3];
+void KalmanFilter(){
+	float a[3], w[3], L[3], t[4], m_dot[3],q[4];
 	float norm, inner_q;
 	float q1[4], q2[4], psi;
 	float buff_arr[4][4];
@@ -105,6 +106,10 @@ void EulerAngle(float* e, float* q){
 	GetFromMPU6050(a, 1);
 
 	GetFromMPU6050(w, 0);
+
+	w[0] -= _gyro_offset[0];
+	w[1] -= _gyro_offset[1];
+	w[2] -= _gyro_offset[2];
 
 	norm = sqrtf(a[0]*a[0] + a[1]*a[1] + a[2]*a[2]);
 	a[0] /= norm;
@@ -225,16 +230,17 @@ void EulerAngle(float* e, float* q){
 		}
 	}
 
-	q[0] = q_kalman[0];
-	q[1] = q_kalman[1];
-	q[2] = q_kalman[2];
-	q[3] = q_kalman[3];
+	_quaternion[0] = _q_offset[0]*q_kalman[0] - _q_offset[1]*q_kalman[1] - _q_offset[2]*q_kalman[2] + _q_offset[3]*q_kalman[3];
+	_quaternion[1] = _q_offset[1]*q_kalman[0] + _q_offset[0]*q_kalman[1] - _q_offset[3]*q_kalman[2] - _q_offset[2]*q_kalman[3];
+	_quaternion[2] = _q_offset[2]*q_kalman[0] + _q_offset[3]*q_kalman[1] + _q_offset[0]*q_kalman[2] + _q_offset[1]*q_kalman[3];
+	_quaternion[3] =-_q_offset[3]*q_kalman[0] + _q_offset[2]*q_kalman[1] - _q_offset[1]*q_kalman[2] + _q_offset[0]*q_kalman[3];
 
 	// 4. Euler Angle
-	e[0] = atan2f(2.0*(q[2]*q[3]+q[0]*q[1]), 1.0-2.0*(q[1]*q[1]+q[2]*q[2]));
-	e[1] = asinf(2.0*(q[0]*q[2]-q[3]*q[1]));
-	e[2] = atan2f(2.0*(q[1]*q[2]+q[0]*q[3]), 1.0-2.0*(q[2]*q[2]+q[3]*q[3]));
+	_euler_angle[0] = atan2f(2.0*(_quaternion[2]*_quaternion[3]+_quaternion[0]*_quaternion[1]), 1.0-2.0*(_quaternion[1]*_quaternion[1]+_quaternion[2]*_quaternion[2]));
+	_euler_angle[1] = asinf(2.0*(_quaternion[0]*_quaternion[2]-_quaternion[3]*_quaternion[1]));
+	_euler_angle[2] = atan2f(2.0*(_quaternion[1]*_quaternion[2]+_quaternion[0]*_quaternion[3]), 1.0-2.0*(_quaternion[2]*_quaternion[2]+_quaternion[3]*_quaternion[3]));
+
+	_w_gyro[0] = w[0];
+	_w_gyro[1] = w[1];
+	_w_gyro[2] = w[2];
 }
-
-
-

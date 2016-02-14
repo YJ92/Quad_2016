@@ -9,5 +9,6 @@
 #define KALMAN_FILTER_H_
 
 extern void EulerAngle(float* e, float* q);
+extern void KalmanFilter(void);
 
 #endif /* KALMAN_FILTER_H_ */

@@ -42,7 +42,7 @@ void ESC_on(){
 	Motor_write(back_motor,0);
 	SysCtlDelay(80000000/3*0.1);
 	GPIOPinWrite(GPIO_PORTE_BASE,GPIO_PIN_0,GPIO_PIN_0);
-	SysCtlDelay(80000000/3*5);
+	SysCtlDelay(80000000/3*3);
 	UARTprintf("Complete...\n");
 }
 
